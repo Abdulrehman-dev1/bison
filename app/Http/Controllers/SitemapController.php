@@ -1,0 +1,14 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Services\SitemapGenerator;
+use Illuminate\Http\Response;
+
+class SitemapController extends Controller
+{
+    public function __invoke(SitemapGenerator $generator): Response
+    {
+        return response($generator->generate(), 200, ['Content-Type' => 'application/xml']);
+    }
+}
