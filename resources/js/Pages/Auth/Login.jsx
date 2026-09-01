@@ -1,17 +1,18 @@
-import Checkbox from '@/Components/Checkbox';
-import InputError from '@/Components/InputError';
-import InputLabel from '@/Components/InputLabel';
-import PrimaryButton from '@/Components/PrimaryButton';
-import TextInput from '@/Components/TextInput';
 import GuestLayout from '@/Layouts/GuestLayout';
 import { Head, Link, useForm } from '@inertiajs/react';
+import { useEffect, useRef } from 'react';
 
 export default function Login({ status, canResetPassword }) {
+    const emailRef = useRef(null);
     const { data, setData, post, processing, errors, reset } = useForm({
         email: '',
         password: '',
         remember: false,
     });
+
+    useEffect(() => {
+        emailRef.current?.focus();
+    }, []);
 
     const submit = (e) => {
         e.preventDefault();
@@ -22,78 +23,82 @@ export default function Login({ status, canResetPassword }) {
     };
 
     return (
-        <GuestLayout>
+        <GuestLayout
+            title="Sign in"
+            subtitle="Enter your credentials to access the admin panel."
+        >
             <Head title="Log in" />
 
-            {status && (
-                <div className="mb-4 text-sm font-medium text-green-600">
-                    {status}
-                </div>
-            )}
+            {status && <div className="auth-status">{status}</div>}
 
-            <form onSubmit={submit}>
-                <div>
-                    <InputLabel htmlFor="email" value="Email" />
-
-                    <TextInput
+            <form onSubmit={submit} className="auth-form">
+                <div className="adm-form-group">
+                    <label htmlFor="email" className="adm-label">
+                        Email
+                    </label>
+                    <input
+                        ref={emailRef}
                         id="email"
                         type="email"
                         name="email"
                         value={data.email}
-                        className="mt-1 block w-full"
+                        className="adm-input"
                         autoComplete="username"
-                        isFocused={true}
                         onChange={(e) => setData('email', e.target.value)}
                     />
-
-                    <InputError message={errors.email} className="mt-2" />
+                    {errors.email && (
+                        <p className="adm-error-text">{errors.email}</p>
+                    )}
                 </div>
 
-                <div className="mt-4">
-                    <InputLabel htmlFor="password" value="Password" />
-
-                    <TextInput
+                <div className="adm-form-group">
+                    <label htmlFor="password" className="adm-label">
+                        Password
+                    </label>
+                    <input
                         id="password"
                         type="password"
                         name="password"
                         value={data.password}
-                        className="mt-1 block w-full"
+                        className="adm-input"
                         autoComplete="current-password"
                         onChange={(e) => setData('password', e.target.value)}
                     />
-
-                    <InputError message={errors.password} className="mt-2" />
+                    {errors.password && (
+                        <p className="adm-error-text">{errors.password}</p>
+                    )}
                 </div>
 
-                <div className="mt-4 block">
-                    <label className="flex items-center">
-                        <Checkbox
+                <div className="auth-form-row">
+                    <label className="auth-checkbox">
+                        <input
+                            type="checkbox"
                             name="remember"
                             checked={data.remember}
                             onChange={(e) =>
                                 setData('remember', e.target.checked)
                             }
                         />
-                        <span className="ms-2 text-sm text-gray-600">
-                            Remember me
-                        </span>
+                        <span>Remember me</span>
                     </label>
-                </div>
 
-                <div className="mt-4 flex items-center justify-end">
                     {canResetPassword && (
                         <Link
                             href={route('password.request')}
-                            className="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+                            className="auth-link"
                         >
-                            Forgot your password?
+                            Forgot password?
                         </Link>
                     )}
-
-                    <PrimaryButton className="ms-4" disabled={processing}>
-                        Log in
-                    </PrimaryButton>
                 </div>
+
+                <button
+                    type="submit"
+                    className="adm-btn adm-btn-copper auth-submit"
+                    disabled={processing}
+                >
+                    {processing ? 'Signing in…' : 'Sign in'}
+                </button>
             </form>
         </GuestLayout>
     );

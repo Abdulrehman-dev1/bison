@@ -1,18 +1,48 @@
-import ApplicationLogo from '@/Components/ApplicationLogo';
 import { Link } from '@inertiajs/react';
 
-export default function GuestLayout({ children }) {
+export default function GuestLayout({ children, title, subtitle }) {
     return (
-        <div className="flex min-h-screen flex-col items-center bg-gray-100 pt-6 sm:justify-center sm:pt-0">
-            <div>
-                <Link href="/">
-                    <ApplicationLogo className="h-20 w-20 fill-current text-gray-500" />
-                </Link>
-            </div>
+        <div className="auth-root">
+            <aside className="auth-aside" aria-hidden="true">
+                <div className="auth-aside-inner">
+                    <img
+                        src="/images/static/bison-logo.png"
+                        alt=""
+                        className="auth-aside-logo"
+                    />
+                    <p className="auth-aside-tagline">
+                        Admin access for Bison TradeWorks
+                    </p>
+                </div>
+            </aside>
 
-            <div className="mt-6 w-full overflow-hidden bg-white px-6 py-4 shadow-md sm:max-w-md sm:rounded-lg">
-                {children}
-            </div>
+            <main className="auth-main">
+                <div className="auth-main-inner">
+                    <Link href="/" className="auth-brand">
+                        <img
+                            src="/images/static/bison-logo.png"
+                            alt="Bison TradeWorks"
+                        />
+                    </Link>
+
+                    <div className="auth-panel">
+                        {(title || subtitle) && (
+                            <header className="auth-header">
+                                {title && <h1 className="auth-title">{title}</h1>}
+                                {subtitle && (
+                                    <p className="auth-subtitle">{subtitle}</p>
+                                )}
+                            </header>
+                        )}
+
+                        {children}
+                    </div>
+
+                    <Link href="/" className="auth-back-link">
+                        ← Back to website
+                    </Link>
+                </div>
+            </main>
         </div>
     );
 }
