@@ -1,10 +1,12 @@
 import { Link, router, usePage } from '@inertiajs/react';
-import { Menu, X } from 'lucide-react';
+import { ClipboardList, Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import { openRequest, useRequestCart } from '@/requestCart';
 
 const NAV_ROUTES = [
     { route: 'brands', key: 'brands' },
     { route: 'retailers', key: 'retailers' },
+    { route: 'catalogue', key: 'catalogue' },
     { route: 'manufacturers', key: 'manufacturers' },
     { route: 'about', key: 'about' },
     { route: 'contact', key: 'contact' },
@@ -47,9 +49,15 @@ function LocaleToggle() {
 export default function Header() {
     const { translations } = usePage().props;
     const nav = translations?.nav ?? {};
+    const catalog = translations?.catalog ?? {};
     const [open, setOpen] = useState(false);
+    const { items } = useRequestCart();
 
-    const isActive = (routeName) => route().current(routeName);
+    const isActive = (routeName) => (
+        routeName === 'catalogue'
+            ? route().current('catalogue') || route().current('catalogue.line')
+            : route().current(routeName)
+    );
 
     return (
         <header className="bt-header">
@@ -76,6 +84,13 @@ export default function Header() {
                     </nav>
 
                     <div className="bt-nav-cta">
+                        {items.length > 0 && (
+                            <button type="button" className="bt-req-btn" onClick={openRequest} aria-label={`${catalog.request_title ?? 'Your request'} (${items.length})`}>
+                                <ClipboardList size={17} />
+                                <span className="bt-req-btn-label">{catalog.request_button ?? 'My request'}</span>
+                                <span className="bt-req-badge">{items.length}</span>
+                            </button>
+                        )}
                         <LocaleToggle />
                         <Link href={route('contact.request')} className="bt-btn bt-btn-solid">
                             {nav.start_request ?? 'Start a Request'}
@@ -84,6 +99,12 @@ export default function Header() {
                 </div>
 
                 <div className="bt-mobile-actions">
+                    {items.length > 0 && (
+                        <button type="button" className="bt-req-btn" onClick={openRequest} aria-label={`${catalog.request_title ?? 'Your request'} (${items.length})`}>
+                            <ClipboardList size={17} />
+                            <span className="bt-req-badge">{items.length}</span>
+                        </button>
+                    )}
                     <button
                         type="button"
                         className="bt-menu-toggle"

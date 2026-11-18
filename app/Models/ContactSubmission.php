@@ -12,6 +12,7 @@ class ContactSubmission extends Model
         'email',
         'company',
         'detail',
+        'items',
         'status',
         'ip_address',
     ];
@@ -19,6 +20,7 @@ class ContactSubmission extends Model
     protected function casts(): array
     {
         return [
+            'items' => 'array',
             'created_at' => 'datetime',
             'updated_at' => 'datetime',
         ];

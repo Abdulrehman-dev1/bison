@@ -13,8 +13,16 @@ class ContactController extends Controller
 {
     public function store(StoreContactRequest $request): RedirectResponse
     {
+        $validated = $request->validated();
+        $items = ($validated['intent'] ?? null) === 'request' ? ($validated['items'] ?? null) : null;
+
         $submission = ContactSubmission::query()->create([
-            ...$request->validated(),
+            'intent' => $validated['intent'],
+            'name' => $validated['name'],
+            'email' => $validated['email'],
+            'company' => $validated['company'] ?? null,
+            'detail' => $validated['detail'] ?? '',
+            'items' => $items ?: null,
             'ip_address' => $request->ip(),
             'status' => 'new',
         ]);

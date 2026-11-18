@@ -17,8 +17,15 @@ class StoreContactRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
             'company' => ['nullable', 'string', 'max:255'],
-            'detail' => ['required', 'string', 'max:5000'],
+            'detail' => ['nullable', 'string', 'max:5000', 'required_without:items'],
             'intent' => ['required', 'in:general,request,partner'],
+            'items' => ['nullable', 'array', 'max:80'],
+            'items.*.sku' => ['required', 'string', 'max:64'],
+            'items.*.name' => ['required', 'string', 'max:200'],
+            'items.*.variant' => ['nullable', 'string', 'max:120'],
+            'items.*.qty' => ['nullable', 'string', 'max:10'],
+            'items.*.line' => ['nullable', 'string', 'max:40'],
+            'items.*.image' => ['nullable', 'string', 'regex:/^\/catalog\/[A-Za-z0-9._-]+$/'],
         ];
     }
 }

@@ -1,0 +1,1 @@
+import{t as e}from"./app-DhuDbEar.js";var t=e();function n({children:e,light:n=!1}){return(0,t.jsx)(`div`,{className:`bt-eyebrow ${n?`bt-eyebrow-light`:``}`,children:e})}export{n as t};

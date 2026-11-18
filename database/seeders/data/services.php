@@ -7,7 +7,7 @@ return [
             'copy' => "You order from us directly, and we manage production, quality, and freight behind the scenes, so you're not chasing multiple vendors for one product.",
             'bullets' => [
                 'Start to finish, no handoff to the manufacturer',
-                'Pricing, quality, and delivery are on us',
+                'Pricing, quality, and delivery are our responsibility',
                 'One billing relationship',
             ],
         ],
@@ -17,7 +17,7 @@ return [
             'bullets' => [
                 'Every partner vetted and managed in person, not by phone',
                 'Capacity confirmed up front, consistency checked on every run',
-                'New partners added every week, each held to the same bar',
+                'A growing network, every new partner held to the same bar',
             ],
         ],
         [
@@ -25,7 +25,7 @@ return [
             'copy' => 'We negotiate pricing and terms directly with our manufacturing partners, so you get clear pricing instead of managing a cross-border negotiation yourself.',
             'bullets' => [
                 'Market-rate pricing, quoted clearly upfront',
-                'Pay in USD or CAD',
+                'Priced in USD, CAD on request',
                 'Factory negotiation and terms handled on your behalf',
             ],
         ],
@@ -40,7 +40,7 @@ return [
         ],
         [
             'title' => 'Quality Control',
-            'copy' => "We inspect production before it ships, so quality issues get caught on our end, not after it lands on your dock.",
+            'copy' => 'We inspect production before it ships, so quality issues get caught on our end, not after it lands on your dock.',
             'bullets' => [
                 'Pre-shipment inspection against your spec',
                 'Issues resolved with the manufacturer directly',
@@ -60,7 +60,7 @@ return [
     'es' => [
         [
             'title' => 'Productos Abastecidos',
-            'copy' => 'Usted ordena directamente con nosotros y gestionamos producción, calidad y flete, para que no persiga múltiples proveedores por un solo producto.',
+            'copy' => 'Usted ordena directamente con nosotros y gestionamos la producción, control de calidad y flete, para que no persiga a múltiples proveedores por un solo producto.',
             'bullets' => [
                 'De principio a fin, sin traspaso al fabricante',
                 'Precios, calidad y entrega son nuestra responsabilidad',
@@ -69,47 +69,47 @@ return [
         ],
         [
             'title' => 'Producción Verificada',
-            'copy' => 'Trabajamos con un conjunto creciente de socios de manufactura en León. La verificación no es un chequeo único, y tampoco lo es la relación.',
+            'copy' => 'Trabajamos con un conjunto de socios de manufactura en crecimiento en León. La verificación y relación con nuestros socios es continua. Estamos presentes en la planta de producción, y manejamos la relación con nuestros socios de manera personal y presencial.',
             'bullets' => [
-                'Cada socio verificado y gestionado en persona',
-                'Capacidad confirmada desde el inicio',
-                'Nuevos socios cada semana, con el mismo estándar',
+                'Cada socio es verificado y gestionado en persona, no por teléfono',
+                'Capacidad confirmada desde el inicio y consistencia revisada en cada lote de producción',
+                'Una red en crecimiento, cada nuevo socio sujeto al mismo estándar',
             ],
         ],
         [
             'title' => 'Precios Confiables',
-            'copy' => 'Negociamos precios y términos directamente con nuestros socios, para que obtenga precios claros sin negociar usted mismo.',
+            'copy' => 'Negociamos los precios y términos directamente con nuestros socios de manufactura, para que usted obtenga precios claros sin tener que hacer la negociación internacional usted mismo.',
             'bullets' => [
-                'Precios de mercado, cotizados claramente',
-                'Pague en USD o CAD',
-                'Negociación con la fábrica manejada por nosotros',
+                'Precios de mercado, cotizados claramente desde un inicio',
+                'Precios en USD, CAD a solicitud',
+                'Manejamos la negociación con el fabricante',
             ],
         ],
         [
-            'title' => 'Importación y Flete',
-            'copy' => 'Adaptamos el método de envío al pedido. Paquetería para muestras, camión completo para volumen. Coordinamos aduanas directamente.',
+            'title' => 'Importación y flete',
+            'copy' => 'Adaptamos el método de envío al pedido. Paquetería para una sola muestra o producción pequeña, camión completo para volumen alto. Coordinamos el paso en aduana directamente para que ningún pedido se quede estancado en la aduana.',
             'bullets' => [
-                'Envío del tamaño correcto',
-                'Despacho aduanal en cada envío',
-                'Actualizaciones desde recolección hasta entrega',
+                'Envío del tamaño correcto, desde un solo artículo hasta un camión lleno',
+                'Coordinación del pase aduanal como parte de cada envío',
+                'Actualizaciones desde la recolección hasta la entrega',
             ],
         ],
         [
-            'title' => 'Control de Calidad',
-            'copy' => 'Inspeccionamos antes del envío, para detectar problemas de calidad antes de que lleguen a su muelle.',
+            'title' => 'Control de calidad',
+            'copy' => 'Inspeccionamos la producción antes de que sea enviada, para que cualquier problema de calidad sea identificado mientras el producto está de nuestro lado, no después de que llegue a su muelle.',
             'bullets' => [
                 'Inspección previa al envío según su especificación',
                 'Problemas resueltos directamente con el fabricante',
-                'Sin negociar reclamos de defectos transfronterizos',
+                'Usted nunca tendrá que negociar un reclamo transfronterizo por defectos',
             ],
         ],
         [
-            'title' => 'Gestión de Cuenta Continua',
-            'copy' => 'La relación no termina con el primer pedido. Seguimos siendo el punto de contacto en ambos extremos.',
+            'title' => 'Gestión de cuenta continua',
+            'copy' => 'La relación no termina con el primer pedido. Nos mantenemos como el punto de contacto entre los dos extremos, orden tras orden.',
             'bullets' => [
-                'Contacto consistente para proveedor y entrega',
-                'Apoyo resolviendo retrasos o problemas de calidad',
-                'Un solo punto de contacto conforme crece',
+                'Contacto constante con el fabricante y manejo de principio a fin de los envíos',
+                'Apoyo resolviendo atrasos o problemas de calidad',
+                'Un solo punto de contacto, incluso cuando sus órdenes se vuelvan más grandes',
             ],
         ],
     ],

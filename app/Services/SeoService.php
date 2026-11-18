@@ -13,7 +13,7 @@ class SeoService
             'url' => config('app.url'),
             'logo' => config('app.url').'/images/static/bison-logo.png',
             'email' => 'contact@bisontradeworks.com',
-            'telephone' => '+1-978-760-2805',
+            'telephone' => '+1-214-420-4152',
             'areaServed' => ['US', 'CA', 'MX'],
             'address' => [
                 ['@type' => 'PostalAddress', 'addressRegion' => 'TX', 'addressCountry' => 'US'],

@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Product;
 use App\Models\ProductCategory;
 use App\Services\SeoService;
 use App\Services\TranslationService;
+use Illuminate\Support\Facades\File;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -90,74 +90,20 @@ class PageController extends Controller
         ]);
     }
 
-    public function catalogue(?string $categorySlug = null): Response
+    public function catalogue(?string $line = null): Response
     {
-        $query = Product::query()->where('is_active', true)->orderBy('sort_order');
-
-        if ($categorySlug) {
-            $query->where('category_slug', $categorySlug);
-        }
-
-        $products = $query
-            ->with(['images' => fn ($query) => $query->orderBy('sort_order')])
-            ->get()
-            ->map(fn (Product $p) => [
-                'slug' => $p->localizedSlug(),
-                'name' => $p->localizedName(),
-                'description' => $p->localizedDescription(),
-                'category_slug' => $p->category_slug,
-                'image_path' => $p->image_path,
-            ]);
+        $payload = $this->catalogPayload($line);
+        $title = $payload['active']['title'] ?? null;
 
         return Inertia::render('Catalogue', [
-            'products' => $products,
-            'categorySlug' => $categorySlug,
-            'categories' => $this->localizedCategories(),
-            'seo' => $this->pageSeo('catalogue'),
+            ...$payload,
+            'seo' => $title
+                ? [
+                    'title' => $title.' | Bison TradeWorks',
+                    'description' => $this->pageSeo('catalogue')['description'],
+                ]
+                : $this->pageSeo('catalogue'),
             'schemas' => [$this->seo->organizationSchema()],
-        ]);
-    }
-
-    public function productShow(string $productSlug): Response
-    {
-        $product = Product::findBySlug($productSlug);
-
-        if (! $product || ! $product->is_active) {
-            abort(404);
-        }
-
-        $locale = app()->getLocale();
-        $nav = $this->translations->getGroup('nav', $locale);
-
-        $product->load(['images' => fn ($query) => $query->orderBy('sort_order')]);
-
-        return Inertia::render('Catalogue/Show', [
-            'product' => [
-                'slug' => $product->localizedSlug($locale),
-                'name' => $product->localizedName($locale),
-                'description' => $product->localizedDescription($locale),
-                'category_slug' => $product->category_slug,
-                'image_path' => $product->image_path,
-                'images' => $product->images->pluck('path')->values()->all(),
-            ],
-            'seo' => [
-                'title' => $product->localizedMetaTitle($locale) ?: $product->localizedName($locale).' | Bison TradeWorks',
-                'description' => $product->localizedMetaDescription($locale) ?: \Illuminate\Support\Str::limit($product->localizedDescription($locale), 160),
-            ],
-            'schemas' => [
-                $this->seo->organizationSchema(),
-                $this->seo->productSchema([
-                    'name' => $product->localizedName($locale),
-                    'description' => $product->localizedDescription($locale),
-                    'image' => $product->image_path ? url($product->image_path) : null,
-                    'url' => url('/catalogue/'.$product->localizedSlug($locale)),
-                ]),
-                $this->seo->breadcrumb([
-                    ['name' => $nav['home'] ?? 'Home', 'url' => url('/')],
-                    ['name' => $nav['catalogue'] ?? 'Catalogue', 'url' => url('/catalogue')],
-                    ['name' => $product->localizedName($locale)],
-                ]),
-            ],
         ]);
     }
 
@@ -176,18 +122,70 @@ class PageController extends Controller
         return $this->translations->getFrontendBundle(app()->getLocale())['pages'] ?? [];
     }
 
-    private function localizedCategories(): array
+    /**
+     * @return array{line: ?string, lines: array<int, array<string, mixed>>, products: array<int, mixed>, active: ?array<string, mixed>}
+     */
+    private function catalogPayload(?string $line): array
     {
         $locale = app()->getLocale();
+        $products = $this->catalogProducts();
+        $defined = collect(config('catalog.lines', []));
 
-        return ProductCategory::query()
-            ->where('is_active', true)
-            ->orderBy('sort_order')
+        if ($line !== null && ! $defined->contains(fn (array $row) => $row['slug'] === $line)) {
+            abort(404);
+        }
+
+        $categories = ProductCategory::query()
+            ->whereIn('slug', $defined->pluck('slug'))
             ->get()
-            ->mapWithKeys(fn (ProductCategory $category) => [
-                $category->slug => $category->localized('title', $locale),
-            ])
+            ->keyBy('slug');
+
+        $lines = $defined
+            ->sortBy('catalog_order')
+            ->values()
+            ->map(function (array $row) use ($products, $categories, $locale) {
+                $category = $categories->get($row['slug']);
+                $title = $category?->localized('title', $locale) ?: ($row['title'][$locale] ?? $row['title']['en']);
+
+                return [
+                    'slug' => $row['slug'],
+                    'title' => $title,
+                    'image' => $row['image'],
+                    'count' => collect($products)->where('l', $row['slug'])->count(),
+                ];
+            })
             ->all();
+
+        $active = $line === null
+            ? null
+            : collect($lines)->firstWhere('slug', $line);
+
+        $visible = $line === null
+            ? []
+            : array_values(array_filter($products, fn (array $product) => ($product['l'] ?? null) === $line));
+
+        return [
+            'line' => $line,
+            'lines' => $lines,
+            'products' => $visible,
+            'active' => $active,
+        ];
+    }
+
+    /**
+     * @return array<int, array<string, mixed>>
+     */
+    private function catalogProducts(): array
+    {
+        $path = public_path('catalog/catalog.json');
+
+        if (! is_file($path)) {
+            return [];
+        }
+
+        $decoded = json_decode(File::get($path), true);
+
+        return is_array($decoded) ? $decoded : [];
     }
 
     private function localizedCategoryCards(): array

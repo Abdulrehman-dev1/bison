@@ -2,8 +2,6 @@
 
 namespace App\Services;
 
-use App\Models\Locale;
-use App\Models\Product;
 use Illuminate\Support\Facades\File;
 
 class SitemapGenerator
@@ -23,17 +21,9 @@ class SitemapGenerator
             ['loc' => $base.'/contact/become-a-partner', 'priority' => '0.7'],
         ];
 
-        $locales = Locale::activeCodes() ?: ['en', 'es'];
-
-        Product::query()->where('is_active', true)->get()->each(function (Product $product) use (&$urls, $base, $locales) {
-            foreach ($locales as $locale) {
-                $slug = $product->localizedSlug($locale);
-
-                if ($slug !== '') {
-                    $urls[] = ['loc' => $base.'/catalogue/'.$slug, 'priority' => '0.7'];
-                }
-            }
-        });
+        foreach (config('catalog.lines', []) as $line) {
+            $urls[] = ['loc' => $base.'/catalogue/'.$line['slug'], 'priority' => '0.7'];
+        }
 
         $xml = '<?xml version="1.0" encoding="UTF-8"?>';
         $xml .= '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">';

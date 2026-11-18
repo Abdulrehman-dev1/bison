@@ -3,7 +3,7 @@
 return [
     'home' => 'Inicio',
     'brands' => 'Marcas',
-    'retailers' => 'Minoristas',
+    'retailers' => 'Comercios',
     'manufacturers' => 'Fabricantes',
     'about' => 'Nosotros',
     'contact' => 'Contacto',

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AuditLogController;
 use App\Http\Controllers\Admin\ContactSubmissionController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\LanguageController;
@@ -25,8 +26,16 @@ Route::get('/contact', [PageController::class, 'contact'])->name('contact');
 Route::get('/contact/request-a-quote', fn () => app(PageController::class)->contact('request'))->name('contact.request');
 Route::get('/contact/become-a-partner', fn () => app(PageController::class)->contact('partner'))->name('contact.partner');
 Route::get('/catalogue', [PageController::class, 'catalogue'])->name('catalogue');
-Route::get('/catalogue/category/{categorySlug}', [PageController::class, 'catalogue'])->name('catalogue.category');
-Route::get('/catalogue/{productSlug}', [PageController::class, 'productShow'])->name('catalogue.show');
+Route::get('/catalogue/category/{categorySlug}', function (string $categorySlug) {
+    $slugs = collect(config('catalog.lines'))->pluck('slug');
+
+    if ($slugs->contains($categorySlug)) {
+        return redirect()->route('catalogue.line', $categorySlug);
+    }
+
+    return redirect()->route('catalogue');
+})->name('catalogue.category');
+Route::get('/catalogue/{line}', [PageController::class, 'catalogue'])->name('catalogue.line');
 
 Route::post('/contact', [ContactController::class, 'store'])->middleware('throttle:5,1')->name('contact.store');
 Route::post('/locale', [LocaleController::class, 'update'])->middleware('throttle:30,1')->name('locale.update');
@@ -67,8 +76,8 @@ Route::middleware(['auth', 'permission:dashboard.view'])->prefix('admin')->name(
     Route::delete('/roles/{role}', [RoleController::class, 'destroy'])->middleware('permission:roles.manage')->name('roles.destroy');
 
     Route::middleware('permission:audit.view')->group(function () {
-        Route::get('/audit', [\App\Http\Controllers\Admin\AuditLogController::class, 'index'])->name('audit.index');
-        Route::get('/audit/{audit}', [\App\Http\Controllers\Admin\AuditLogController::class, 'show'])->name('audit.show');
+        Route::get('/audit', [AuditLogController::class, 'index'])->name('audit.index');
+        Route::get('/audit/{audit}', [AuditLogController::class, 'show'])->name('audit.show');
     });
 
     Route::middleware('permission:languages.view')->group(function () {

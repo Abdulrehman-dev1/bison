@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Models\Locale;
 use App\Models\Translation;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Cache;
@@ -21,6 +22,7 @@ class TranslationService
         'steps.placement',
         'steps.retail',
         'regions',
+        'catalog',
     ];
 
     public const STATIC_GROUPS = [
@@ -51,6 +53,7 @@ class TranslationService
         'steps.placement' => 'Steps — Placement',
         'steps.retail' => 'Steps — Retail',
         'regions' => 'Regions (Home page)',
+        'catalog' => 'Catalog',
     ];
 
     public function get(string $group, string $key, ?string $locale = null): ?string
@@ -368,7 +371,7 @@ class TranslationService
 
         return [
             'matrix' => $pageMatrix,
-            'keysPaginator' => new \Illuminate\Pagination\LengthAwarePaginator(
+            'keysPaginator' => new LengthAwarePaginator(
                 $pageKeys->all(),
                 $total,
                 $perPage,
@@ -377,7 +380,6 @@ class TranslationService
             ),
         ];
     }
-
 
     public function missingKeysForLocale(string $locale): array
     {

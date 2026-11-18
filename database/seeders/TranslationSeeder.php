@@ -69,6 +69,8 @@ class TranslationSeeder extends Seeder
 
             $regions = require database_path('seeders/data/regions.php');
             $service->importStaticFromArray('regions', $locale, $regions[$locale]);
+
+            $service->importStaticFromArray('catalog', $locale, require lang_path("{$locale}/catalog.php"));
         }
     }
 }

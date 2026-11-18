@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { usePage } from '@inertiajs/react';
+import RequestDrawer from '@/Components/RequestDrawer';
 import Footer from './Footer';
 import Header from './Header';
 
@@ -15,6 +16,7 @@ export default function AppLayout({ children }) {
             <Header />
             <main>{children}</main>
             <Footer />
+            <RequestDrawer />
         </div>
     );
 }

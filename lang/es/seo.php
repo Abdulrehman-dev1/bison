@@ -3,40 +3,40 @@
 return [
     'home' => [
         'title' => 'Bison TradeWorks | Manufactura y abastecimiento transfronterizo',
-        'description' => 'Manufactura y productos abastecidos desde México. Una relación cubre verificación, precios, calidad y entrega para marcas, minoristas y fabricantes.',
+        'description' => 'Manufactura y productos abastecidos desde México. Una sola relación cubre la verificación, los precios, la calidad y la entrega para marcas, comerciantes y fabricantes.',
     ],
     'brands' => [
-        'title' => 'Manufactura por contrato para marcas | Bison TradeWorks',
-        'description' => 'Manufactura por contrato según sus especificaciones. Bison TradeWorks gestiona abastecimiento, precios, calidad y entrega.',
+        'title' => 'Maquila para marcas | Bison TradeWorks',
+        'description' => 'Maquila diseñada en base a sus especificaciones. Bison TradeWorks gestiona el abastecimiento, los precios, la calidad y la entrega.',
     ],
     'retailers' => [
-        'title' => 'Productos listos para minoristas | Bison TradeWorks',
-        'description' => 'Productos listos para sus estantes. Calidad verificada de socios de manufactura, entregados sin gestionar la fábrica.',
+        'title' => 'Líneas establecidas para comerciantes | Bison TradeWorks',
+        'description' => 'Líneas establecidas para sus estantes. Productos de socios fabricantes verificados, entregados sin que usted gestione la fábrica.',
     ],
     'manufacturers' => [
         'title' => 'Socios de manufactura | Bison TradeWorks',
-        'description' => 'Coloque su producción con compradores de EE.UU. y Canadá. Bison TradeWorks gestiona relaciones y flete.',
+        'description' => 'Coloque su producción con compradores y comerciantes de Estados Unidos y Canadá. Bison TradeWorks gestiona la relación y el flete.',
     ],
     'about' => [
-        'title' => 'Acerca de Bison TradeWorks',
-        'description' => 'Un equipo transfronterizo construido alrededor de un proceso. Conectamos compradores con socios de manufactura en México.',
+        'title' => 'Sobre Bison TradeWorks',
+        'description' => 'Un equipo transfronterizo construido en torno a un solo proceso. Conectamos compradores con socios de manufactura verificados en México.',
     ],
     'catalogue' => [
-        'title' => 'Catálogo de productos | Bison TradeWorks',
-        'description' => 'Explore líneas de productos listos para surtir de nuestros socios de manufactura en México.',
+        'title' => 'Catálogo | Bison TradeWorks',
+        'description' => 'Todos los estilos que manejamos, por línea. Solicite la lista de precios para conocer precios de mayoreo, mínimos y tiempos de entrega.',
     ],
     'contact' => [
         'general' => [
             'title' => 'Contacto | Bison TradeWorks',
-            'description' => 'Comuníquese con Bison TradeWorks para abastecimiento, surtido o preguntas generales.',
+            'description' => 'Contáctenos para comprar, surtir, suministrar productos o hacer una pregunta.',
         ],
         'request' => [
             'title' => 'Solicitar cotización | Bison TradeWorks',
-            'description' => 'Cuéntenos qué necesita pedir. Cotizaremos con un solo punto de contacto.',
+            'description' => 'Díganos qué necesita ordenar. Se lo cotizamos con un solo punto de contacto.',
         ],
         'partner' => [
-            'title' => 'Ser socio de manufactura | Bison TradeWorks',
-            'description' => 'Cuéntenos sobre su capacidad de manufactura y le diremos honestamente si encaja.',
+            'title' => 'Socio de manufactura | Bison TradeWorks',
+            'description' => 'Cuéntenos sobre su capacidad de manufactura y le diremos honestamente si podemos trabajar juntos.',
         ],
     ],
 ];

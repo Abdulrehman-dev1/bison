@@ -7,7 +7,7 @@ return [
     'manufacturers' => 'Manufacturers',
     'about' => 'About',
     'contact' => 'Contact',
-    'catalogue' => 'Catalogue',
+    'catalogue' => 'Catalog',
     'start_request' => 'Start a Request',
     'request' => 'Request',
     'language' => 'Language',

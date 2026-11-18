@@ -28,7 +28,22 @@ export default function Show({ submission }) {
                         <span className={`adm-badge adm-badge-${submission.status}`}>{submission.status}</span>
                     </div>
                     <div style={{ padding: '22px' }}>
-                        <p style={{ whiteSpace: 'pre-wrap', lineHeight: 1.65, margin: 0 }}>{submission.detail}</p>
+                        <p style={{ whiteSpace: 'pre-wrap', lineHeight: 1.65, margin: 0 }}>{submission.detail || '—'}</p>
+                        {Array.isArray(submission.items) && submission.items.length > 0 && (
+                            <div style={{ marginTop: 22 }}>
+                                <h3 style={{ fontSize: 13, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase', margin: '0 0 10px' }}>Requested items</h3>
+                                <ul style={{ margin: 0, paddingLeft: 18, lineHeight: 1.6 }}>
+                                    {submission.items.map((item) => (
+                                        <li key={item.sku}>
+                                            {item.name}
+                                            {item.variant ? ` — ${item.variant}` : ''}
+                                            {item.sku ? ` (${item.sku})` : ''}
+                                            {item.qty ? ` · Qty ${item.qty}` : ''}
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                        )}
                     </div>
                 </div>
 

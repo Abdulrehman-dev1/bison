@@ -1,7 +1,10 @@
-import { Link } from '@inertiajs/react';
+import { Link, usePage } from '@inertiajs/react';
 
 export default function Footer() {
     const year = new Date().getFullYear();
+    const { translations } = usePage().props;
+    const common = translations?.common ?? {};
+    const nav = translations?.nav ?? {};
 
     return (
         <footer className="bt-footer">
@@ -15,30 +18,28 @@ export default function Footer() {
                                 className="bt-footer-mark"
                             />
                             <p className="bt-footer-tagline">
-                                We source, place, and manage manufacturing relationships
-                                in person, across any category, between Mexico, the US,
-                                and Canada.
+                                {common.footer_blurb ?? 'We source, place, and manage manufacturing relationships in person, across any category, between Mexico, the US, and Canada.'}
                             </p>
                         </div>
 
                         <div className="bt-footer-col">
-                            <h4>Solutions</h4>
-                            <Link href={route('brands')}>For Brands</Link>
-                            <Link href={route('retailers')}>For Retailers</Link>
-                            <Link href={route('manufacturers')}>For Manufacturers</Link>
+                            <h4>{common.solutions ?? 'Solutions'}</h4>
+                            <Link href={route('brands')}>{common.for_brands ?? 'For Brands'}</Link>
+                            <Link href={route('retailers')}>{common.for_retailers ?? 'For Retailers'}</Link>
+                            <Link href={route('manufacturers')}>{common.for_manufacturers ?? 'For Manufacturers'}</Link>
                         </div>
 
                         <div className="bt-footer-col">
-                            <h4>Company</h4>
-                            <Link href={route('about')}>About</Link>
-                            <Link href={route('contact')}>Contact</Link>
+                            <h4>{common.company_heading ?? 'Company'}</h4>
+                            <Link href={route('about')}>{nav.about ?? 'About'}</Link>
+                            <Link href={route('contact')}>{nav.contact ?? 'Contact'}</Link>
                         </div>
 
                         <div className="bt-footer-col">
-                            <h4>Contact</h4>
+                            <h4>{nav.contact ?? 'Contact'}</h4>
                             <a href="mailto:contact@bisontradeworks.com">contact@bisontradeworks.com</a>
-                            <a href="tel:+19787602805">(978) 760-2805</a>
-                            <span>Texas, US · Guanajuato, MX</span>
+                            <a href={`tel:${common.phone_tel ?? '+12144204152'}`}>{common.phone ?? '214-420-4152'}</a>
+                            <span>{common.office_value ?? 'Texas, US · Guanajuato, MX'}</span>
                         </div>
                     </div>
 

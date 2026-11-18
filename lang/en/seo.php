@@ -10,8 +10,8 @@ return [
         'description' => 'Contract manufacturing built to your spec. Bison TradeWorks manages sourcing, pricing, quality, and delivery from vetted Mexico producers.',
     ],
     'retailers' => [
-        'title' => 'Ready-Made Goods for Retailers | Bison TradeWorks',
-        'description' => 'Ready-made goods sourced for your shelves. Quality-checked products from vetted manufacturing partners, delivered without factory management.',
+        'title' => 'Established Lines for Retailers | Bison TradeWorks',
+        'description' => 'Established product lines sourced for your shelves. Quality-checked goods from vetted manufacturing partners, delivered without factory management.',
     ],
     'manufacturers' => [
         'title' => 'Manufacturing Partners | Bison TradeWorks',
@@ -22,13 +22,13 @@ return [
         'description' => 'A cross-border team built around one process. We connect US and Canadian buyers with vetted manufacturing partners in Mexico.',
     ],
     'catalogue' => [
-        'title' => 'Product Catalogue | Bison TradeWorks',
-        'description' => 'Browse ready-made product lines available to stock from our vetted manufacturing partners in Mexico.',
+        'title' => 'Product Catalog | Bison TradeWorks',
+        'description' => 'Every style we carry, by line. Request a line sheet for wholesale prices, minimums, and lead times.',
     ],
     'contact' => [
         'general' => [
             'title' => 'Contact Bison TradeWorks',
-            'description' => 'Get in touch with Bison TradeWorks for sourcing, stocking, supplying, or general questions.',
+            'description' => 'Contact Bison TradeWorks about buying, stocking, supplying, or a question.',
         ],
         'request' => [
             'title' => 'Request a Quote | Bison TradeWorks',

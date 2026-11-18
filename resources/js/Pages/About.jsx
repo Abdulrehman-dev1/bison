@@ -24,26 +24,13 @@ export default function About({ seo, schemas }) {
             <section>
                 <div className="bt-wrap bt-story-grid">
                     <div className="bt-story-photo">
-                        <span>Photo placeholder — León, Mexico</span>
+                        <span>{page('photo_label', 'Photo placeholder — León, Mexico')}</span>
                     </div>
                     <div className="bt-story-copy">
-                        <Eyebrow>Our Story</Eyebrow>
-                        <h2>Why we exist</h2>
-                        <p className="bt-story-note">
-                            Manufacturers rarely have a direct, trustworthy path to buyers
-                            on the other side of a border, and buyers rarely have a
-                            reliable way to vet a factory they&apos;ve never set foot in. Bison
-                            TradeWorks exists in that gap, representing both sides
-                            properly instead of leaving either one guessing.
-                        </p>
-                        <p className="bt-story-note">
-                            We work with manufacturers in León, Mexico, a region known for
-                            serious craftsmanship that most outside buyers never see
-                            firsthand, and we want to help them reach buyers who&apos;d
-                            otherwise never find them, building something real in the
-                            process. Every relationship runs in both English and Spanish,
-                            so nothing gets lost between buyer and manufacturer.
-                        </p>
+                        <Eyebrow>{page('story_eyebrow', 'Our story')}</Eyebrow>
+                        <h2>{page('story_title', 'Why we exist')}</h2>
+                        <p className="bt-story-note">{page('story_p1')}</p>
+                        <p className="bt-story-note">{page('story_p2')}</p>
                     </div>
                 </div>
             </section>
@@ -51,39 +38,39 @@ export default function About({ seo, schemas }) {
             <section>
                 <div className="bt-wrap">
                     <div className="bt-sec-head">
-                        <Eyebrow>How We Work</Eyebrow>
-                        <h2>One vetted relationship at a time</h2>
-                        <p>We&apos;re not building a directory of manufacturers we&apos;ve never met. Every partner joins our network only after we&apos;ve visited the floor in person, and we&apos;re meeting new ones every week.</p>
+                        <Eyebrow>{page('how_eyebrow', 'How we work')}</Eyebrow>
+                        <h2>{page('how_title', 'One vetted relationship at a time')}</h2>
+                        <p>{page('how_dek')}</p>
                     </div>
                     <div className="bt-card-grid">
                         <div className="bt-card">
                             <div className="bt-ico">
                                 <Compass size={22} strokeWidth={1.75} />
                             </div>
-                            <h3>We vet before we buy</h3>
-                            <p>Every manufacturing partner we work with has been vetted in person, not just certified on paper.</p>
+                            <h3>{page('vet_title', 'We vet before we buy')}</h3>
+                            <p>{page('vet_copy')}</p>
                         </div>
                         <div className="bt-card">
                             <div className="bt-ico">
                                 <MessagesSquare size={22} strokeWidth={1.75} />
                             </div>
-                            <h3>We own the negotiation</h3>
-                            <p>Pricing and terms are handled by us, directly with the manufacturer. You get clear pricing, not a cross-border negotiation.</p>
+                            <h3>{page('negotiate_title', 'We own the negotiation')}</h3>
+                            <p>{page('negotiate_copy')}</p>
                         </div>
                         <div className="bt-card">
                             <div className="bt-ico">
                                 <RotateCcw size={22} strokeWidth={1.75} />
                             </div>
-                            <h3>We stay accountable after delivery</h3>
-                            <p>We stay involved after delivery, tracking quality and consistency so the relationship keeps working for you, order after order.</p>
+                            <h3>{page('after_title', 'We stay accountable after delivery')}</h3>
+                            <p>{page('after_copy')}</p>
                         </div>
                     </div>
                 </div>
             </section>
 
             <CtaBand
-                heading="Start a conversation."
-                copy="A short call is enough to know if we're the right fit for what you need."
+                heading={page('cta_heading', 'Start a conversation.')}
+                copy={page('cta_copy', "A short call is enough to know if we're the right fit for what you need.")}
                 primary={{ label: common('get_in_touch', 'Get in Touch'), href: route('contact') }}
             />
         </AppLayout>

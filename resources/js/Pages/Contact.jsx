@@ -1,7 +1,10 @@
 import AppLayout from '@/Components/Layout/AppLayout';
 import SeoHead from '@/Components/SeoHead';
+import { useTranslation } from '@/hooks/useTranslation';
+import { clearRequestItems, openRequest, useRequestCart } from '@/requestCart';
 import { Link, useForm, usePage } from '@inertiajs/react';
 import { ArrowRight } from 'lucide-react';
+import { useEffect } from 'react';
 
 const INTENT_COPY = {
     partner: {
@@ -17,18 +20,21 @@ const INTENT_COPY = {
         placeholder: 'e.g. product type, ~500 units/month',
     },
     general: {
-        h1: 'Get in touch.',
-        dek: "Whether you're ordering, stocking, or supplying goods, exploring a new category, or just have a question, tell us what you need and we'll take it from there.",
+        h1: 'Contact us.',
+        dek: "Whether you're buying, stocking, or supplying products, exploring a new product category, or just have a question, tell us what you need and we'll start there.",
         label: 'How can we help?',
-        placeholder: 'e.g. sourcing, stocking, supplying, or something else',
+        placeholder: "e.g. a question, or a category you're exploring",
     },
 };
 
 export default function Contact({ seo, schemas, intent = 'general' }) {
-    const { translations, flash } = usePage().props;
+    const { translations, flash, url } = usePage().props;
+    const t = useTranslation();
     const common = translations?.common ?? {};
     const pages = translations?.pages ?? {};
     const copy = pages?.contact?.[intent] ?? pages?.contact?.general ?? INTENT_COPY[intent] ?? INTENT_COPY.general;
+    const cart = useRequestCart();
+    const requestItems = intent === 'request' ? cart.items : [];
 
     const { data, setData, post, processing, errors, reset } = useForm({
         name: '',
@@ -36,7 +42,37 @@ export default function Contact({ seo, schemas, intent = 'general' }) {
         company: '',
         detail: '',
         intent,
+        items: [],
     });
+
+    useEffect(() => {
+        if (intent !== 'request') {
+            return;
+        }
+
+        setData('items', cart.items.map((item) => ({
+            sku: item.sku,
+            name: item.name,
+            variant: item.variant || '',
+            qty: item.qty || '',
+            line: item.line || '',
+            image: item.image || '',
+        })));
+    }, [intent, cart.items]);
+
+    useEffect(() => {
+        if (intent !== 'request') {
+            return;
+        }
+
+        const lineName = new URLSearchParams((url || '').split('?')[1] || '').get('line');
+
+        if (!lineName) {
+            return;
+        }
+
+        setData('detail', t('catalog.line_sheet_prefill', 'Please send me the :line line sheet.').replace(':line', lineName));
+    }, [intent]);
 
     const submitted = Boolean(flash?.success);
 
@@ -44,7 +80,12 @@ export default function Contact({ seo, schemas, intent = 'general' }) {
         event.preventDefault();
         post(route('contact.store'), {
             preserveScroll: true,
-            onSuccess: () => reset('name', 'email', 'company', 'detail'),
+            onSuccess: () => {
+                reset('name', 'email', 'company', 'detail');
+                if (intent === 'request') {
+                    clearRequestItems();
+                }
+            },
         });
     };
 
@@ -69,6 +110,25 @@ export default function Contact({ seo, schemas, intent = 'general' }) {
                             </div>
                         ) : (
                             <>
+                                {requestItems.length > 0 && (
+                                    <div className="bt-ord-items">
+                                        <div className="bt-ord-head">
+                                            <span>{t('catalog.items', 'Items in your request')} ({requestItems.length})</span>
+                                            <button type="button" onClick={openRequest}>{t('catalog.edit', 'Edit')}</button>
+                                        </div>
+                                        <ul>
+                                            {requestItems.map((item) => (
+                                                <li key={item.sku}>
+                                                    {item.image && <img src={item.image} alt="" />}
+                                                    <span>
+                                                        <strong>{item.name}</strong>
+                                                        <em>{[item.variant, item.sku, item.qty ? `${t('catalog.qty', 'Qty')} ${item.qty}` : ''].filter(Boolean).join(' · ')}</em>
+                                                    </span>
+                                                </li>
+                                            ))}
+                                        </ul>
+                                    </div>
+                                )}
                                 <label>
                                     {common.name ?? 'Name'}
                                     <input
@@ -76,7 +136,7 @@ export default function Contact({ seo, schemas, intent = 'general' }) {
                                         type="text"
                                         value={data.name}
                                         onChange={(event) => setData('name', event.target.value)}
-                                        placeholder="Jordan Ramirez"
+                                        placeholder={common.name_placeholder ?? 'Jordan Ramirez'}
                                     />
                                     {errors.name && <span className="bt-form-error">{errors.name}</span>}
                                 </label>
@@ -87,7 +147,7 @@ export default function Contact({ seo, schemas, intent = 'general' }) {
                                         type="email"
                                         value={data.email}
                                         onChange={(event) => setData('email', event.target.value)}
-                                        placeholder="jordan@yourbrand.com"
+                                        placeholder={common.email_placeholder ?? 'jordan@yourbrand.com'}
                                     />
                                     {errors.email && <span className="bt-form-error">{errors.email}</span>}
                                 </label>
@@ -97,14 +157,14 @@ export default function Contact({ seo, schemas, intent = 'general' }) {
                                         type="text"
                                         value={data.company}
                                         onChange={(event) => setData('company', event.target.value)}
-                                        placeholder="Your brand"
+                                        placeholder={common.company_placeholder ?? 'Your brand'}
                                     />
                                     {errors.company && <span className="bt-form-error">{errors.company}</span>}
                                 </label>
                                 <label>
                                     {copy.label}
                                     <textarea
-                                        required
+                                        required={requestItems.length === 0}
                                         rows={5}
                                         value={data.detail}
                                         onChange={(event) => setData('detail', event.target.value)}
@@ -127,7 +187,7 @@ export default function Contact({ seo, schemas, intent = 'general' }) {
                         <div className="bt-info-block">
                             <h4>{common.reach_us ?? 'Reach us'}</h4>
                             <a href="mailto:contact@bisontradeworks.com">contact@bisontradeworks.com</a>
-                            <a href="tel:+19787602805">(978) 760-2805</a>
+                            <a href={`tel:${common.phone_tel ?? '+12144204152'}`}>{common.phone ?? '214-420-4152'}</a>
                         </div>
                         <div className="bt-info-block">
                             <h4>{common.office ?? 'Office'}</h4>
@@ -138,7 +198,7 @@ export default function Contact({ seo, schemas, intent = 'general' }) {
                             <span>{common.response_time_value ?? 'Typically within one business day.'}</span>
                         </div>
                         <Link href={route('contact.request')} className="bt-link-cta">
-                            Need a quote instead?
+                            {common.need_quote ?? 'Need a quote instead?'}
                         </Link>
                     </div>
                 </div>

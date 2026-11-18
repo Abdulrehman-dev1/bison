@@ -5,12 +5,12 @@ return [
         'steps_eyebrow' => 'How It Works',
         'steps_title' => 'From spec to your dock',
         'cta_heading' => 'Get a quote for your product.',
-        'cta_copy' => "Tell us what you're making or ordering. We'll price it and tell you exactly what it takes.",
+        'cta_copy' => "Tell us what you want made or ordered. We'll quote it and explain exactly what it will take.",
     ],
     'es' => [
-        'steps_eyebrow' => 'Cómo Funciona',
-        'steps_title' => 'De la especificación a su muelle',
+        'steps_eyebrow' => 'Cómo funciona',
+        'steps_title' => 'Desde sus especificaciones hasta su muelle',
         'cta_heading' => 'Obtenga una cotización para su producto.',
-        'cta_copy' => 'Cuéntenos qué está fabricando u ordenando. Lo cotizamos y le decimos exactamente qué se necesita.',
+        'cta_copy' => 'Cuéntenos qué desea fabricar u ordenar. Nosotros se lo cotizaremos y le explicaremos exactamente lo que se necesitará.',
     ],
 ];

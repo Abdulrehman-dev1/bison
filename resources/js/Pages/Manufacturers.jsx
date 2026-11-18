@@ -3,7 +3,7 @@ import CtaBand from '@/Components/CtaBand';
 import Eyebrow from '@/Components/Eyebrow';
 import SeoHead from '@/Components/SeoHead';
 import { useTranslation } from '@/hooks/useTranslation';
-import { Compass, Factory, Receipt, Repeat2, ShieldCheck, Store } from 'lucide-react';
+import { Receipt, Repeat2, Store } from 'lucide-react';
 
 export default function Manufacturers({ seo, schemas }) {
     const t = useTranslation();
@@ -25,30 +25,30 @@ export default function Manufacturers({ seo, schemas }) {
             <section>
                 <div className="bt-wrap">
                     <div className="bt-sec-head">
-                        <Eyebrow>Why Partner With Us</Eyebrow>
-                        <h2>Sell to one buyer, not a dozen</h2>
+                        <Eyebrow>{page('why_eyebrow', 'Why partner with us')}</Eyebrow>
+                        <h2>{page('why_title', 'One buyer, many shelves')}</h2>
                     </div>
                     <div className="bt-card-grid">
                         <div className="bt-card">
                             <div className="bt-ico">
                                 <Store size={22} strokeWidth={1.75} />
                             </div>
-                            <h3>Reach without exporting</h3>
-                            <p>We manage the buyer relationship and freight coordination, while you handle standard export documentation on your end.</p>
+                            <h3>{page('reach_title', 'Reach without the hassle')}</h3>
+                            <p>{page('reach_copy', 'We find the buyers, manage the relationship, and coordinate freight. You keep making the product and handle standard export paperwork.')}</p>
                         </div>
                         <div className="bt-card">
                             <div className="bt-ico">
                                 <Receipt size={22} strokeWidth={1.75} />
                             </div>
-                            <h3>No chasing payments</h3>
-                            <p>You sell to us directly. No chasing payment from retail accounts across the border.</p>
+                            <h3>{page('pay_title', 'No chasing payments')}</h3>
+                            <p>{page('pay_copy', 'You sell to us directly. No chasing payment from retail accounts across the border.')}</p>
                         </div>
                         <div className="bt-card">
                             <div className="bt-ico">
                                 <Repeat2 size={22} strokeWidth={1.75} />
                             </div>
-                            <h3>Room to grow the relationship</h3>
-                            <p>Whether it starts with a single order or ongoing production, we stay your point of contact.</p>
+                            <h3>{page('grow_title', 'Room to grow the relationship')}</h3>
+                            <p>{page('grow_copy', 'Whether it starts with a single order or ongoing production, we stay your point of contact.')}</p>
                         </div>
                     </div>
                 </div>
@@ -57,8 +57,8 @@ export default function Manufacturers({ seo, schemas }) {
             <section>
                 <div className="bt-wrap">
                     <div className="bt-sec-head">
-                        <Eyebrow>How It Works</Eyebrow>
-                        <h2>From conversation to first order</h2>
+                        <Eyebrow>{page('steps_eyebrow', 'How it works')}</Eyebrow>
+                        <h2>{page('steps_title', 'From conversation to first order')}</h2>
                     </div>
                     <div className="bt-steps-row">
                         {(Array.isArray(steps) ? steps : []).map((step) => (
@@ -73,8 +73,8 @@ export default function Manufacturers({ seo, schemas }) {
             </section>
 
             <CtaBand
-                heading="Become a manufacturing partner."
-                copy="Tell us what you make and what you can produce. We'll tell you honestly if it's a fit."
+                heading={page('cta_heading', 'Become a manufacturing partner.')}
+                copy={page('cta_copy', "Tell us what you make and what you can produce. We'll tell you honestly if it's a fit.")}
                 primary={{ label: common('become_partner', 'Become a Manufacturing Partner'), href: route('contact.partner') }}
             />
         </AppLayout>

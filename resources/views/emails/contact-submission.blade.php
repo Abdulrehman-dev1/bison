@@ -11,6 +11,19 @@
     <p><strong>Email:</strong> {{ $submission->email }}</p>
     <p><strong>Company:</strong> {{ $submission->company ?: '—' }}</p>
     <p><strong>Message:</strong></p>
-    <p>{{ $submission->detail }}</p>
+    <p>{{ $submission->detail !== '' ? $submission->detail : '—' }}</p>
+    @if (! empty($submission->items))
+        <p><strong>Items:</strong></p>
+        <ul>
+            @foreach ($submission->items as $item)
+                <li>
+                    {{ $item['name'] ?? '' }}
+                    @if (! empty($item['variant'])) — {{ $item['variant'] }} @endif
+                    @if (! empty($item['sku'])) ({{ $item['sku'] }}) @endif
+                    @if (! empty($item['qty'])) · Qty {{ $item['qty'] }} @endif
+                </li>
+            @endforeach
+        </ul>
+    @endif
 </body>
 </html>
