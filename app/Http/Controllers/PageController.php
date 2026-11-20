@@ -162,7 +162,10 @@ class PageController extends Controller
 
         $visible = $line === null
             ? []
-            : array_values(array_filter($products, fn (array $product) => ($product['l'] ?? null) === $line));
+            : $this->withColorPhotos(array_values(array_filter(
+                $products,
+                fn (array $product) => ($product['l'] ?? null) === $line,
+            )));
 
         return [
             'line' => $line,
@@ -186,6 +189,116 @@ class PageController extends Controller
         $decoded = json_decode(File::get($path), true);
 
         return is_array($decoded) ? $decoded : [];
+    }
+
+    /**
+     * Attach each color's own photos when files are named with that color's SKU.
+     *
+     * WB-001-BLK.jpg and WB-001-BLK-1.jpg belong to SKU WB-001-BLK.
+     * The style photo stays the fallback when a color has no files of its own.
+     *
+     * @param  array<int, array<string, mixed>>  $products
+     * @return array<int, array<string, mixed>>
+     */
+    private function withColorPhotos(array $products): array
+    {
+        $index = $this->catalogFileIndex();
+
+        foreach ($products as &$product) {
+            $photos = [];
+
+            foreach ($this->colorSkus($product) as $sku) {
+                $matches = $index[$sku] ?? [];
+
+                if ($matches !== []) {
+                    $photos[$sku] = $matches;
+                }
+            }
+
+            if ($photos !== []) {
+                $product['photos'] = $photos;
+            }
+        }
+        unset($product);
+
+        return $products;
+    }
+
+    /**
+     * @param  array<string, mixed>  $product
+     * @return array<int, string>
+     */
+    private function colorSkus(array $product): array
+    {
+        $skus = [];
+
+        foreach ($product['k'] ?? [] as $color) {
+            if (! empty($color[2])) {
+                $skus[] = (string) $color[2];
+            }
+        }
+
+        if ($skus === []) {
+            foreach ($product['s'] ?? [] as $option) {
+                $sku = (string) ($option[0] ?? '');
+
+                if ($sku !== '' && $sku !== ($product['c'] ?? null)) {
+                    $skus[] = $sku;
+                }
+            }
+        }
+
+        return $skus;
+    }
+
+    /**
+     * @return array<string, array<int, string>>
+     */
+    private function catalogFileIndex(): array
+    {
+        $directory = public_path('catalog');
+
+        if (! is_dir($directory)) {
+            return [];
+        }
+
+        $index = [];
+
+        foreach (File::files($directory) as $file) {
+            $name = $file->getFilename();
+
+            if (! preg_match('/\.(jpe?g|png|webp)$/i', $name)) {
+                continue;
+            }
+
+            $stem = pathinfo($name, PATHINFO_FILENAME);
+            $path = '/catalog/'.$name;
+            $index[$stem][] = $path;
+
+            if (preg_match('/^(.+)-\d+$/', $stem, $matches) === 1) {
+                $index[$matches[1]][] = $path;
+            }
+        }
+
+        foreach ($index as &$paths) {
+            $paths = array_values(array_unique($paths));
+            usort($paths, function (string $left, string $right): int {
+                return $this->photoRank($left) <=> $this->photoRank($right);
+            });
+        }
+
+        return $index;
+    }
+
+    private function photoRank(string $path): string
+    {
+        $stem = pathinfo($path, PATHINFO_FILENAME);
+
+        if (preg_match('/-(\d+)$/', $stem, $matches) === 1) {
+            return sprintf('1-%05d-%s', (int) $matches[1], $stem);
+        }
+
+        return '0-00000-'.$stem;
     }
 
     private function localizedCategoryCards(): array

@@ -45,6 +45,32 @@ function styleCode(code) {
     return String(code || '').replace(/-[A-Z]{3}$/, '');
 }
 
+function styleImages(product) {
+    const images = [];
+
+    if (product.i) {
+        images.push(product.i);
+    }
+
+    for (const src of product.g || []) {
+        if (src && !images.includes(src)) {
+            images.push(src);
+        }
+    }
+
+    return images;
+}
+
+function imagesFor(product, selected) {
+    const own = selected?.sku ? product.photos?.[selected.sku] : null;
+
+    if (Array.isArray(own) && own.length > 0) {
+        return own;
+    }
+
+    return styleImages(product);
+}
+
 function swatchStyle(swatch) {
     if (!swatch?.length) {
         return null;
@@ -263,7 +289,10 @@ export default function Catalogue({ seo, schemas, line = null, lines = [], produ
                     text={text}
                     deptLabel={deptLabel}
                     onClose={() => setStyleParam(null)}
-                    onColor={(name) => setOpenColor(name)}
+                    onColor={(name) => {
+                        setOpenColor(name);
+                        setImageIndex(0);
+                    }}
                     onImage={setImageIndex}
                 />
             )}
@@ -278,7 +307,8 @@ function ProductDialog({ product, colorName, imageIndex, cart, text, deptLabel, 
         || colors.find((color) => color.name === product.gc)
         || colors[0]
         || null;
-    const images = product.g?.length ? product.g : (product.i ? [product.i] : []);
+    const images = imagesFor(product, selected);
+    const showingOwnColor = Boolean(selected?.sku && product.photos?.[selected.sku]?.length);
     const photo = images[imageIndex] || images[0];
     const sku = selected?.sku || product.s?.[0]?.[0] || product.c;
     const inRequest = cart.some((item) => item.sku === sku);
@@ -314,7 +344,7 @@ function ProductDialog({ product, colorName, imageIndex, cart, text, deptLabel, 
             sku,
             name: product.n,
             variant: selected?.name || '',
-            image: product.i || '',
+            image: images[0] || product.i || '',
             line: product.l,
             qty: '',
         });
@@ -339,7 +369,7 @@ function ProductDialog({ product, colorName, imageIndex, cart, text, deptLabel, 
                             ))}
                         </div>
                     )}
-                    {product.gc && colors.length > 1 && <p className="bt-pv-cap">{fill(text('shown', 'Photos show :color'), { color: product.gc })}</p>}
+                    {!showingOwnColor && product.gc && colors.length > 1 && <p className="bt-pv-cap">{fill(text('shown', 'Photos show :color'), { color: product.gc })}</p>}
                 </div>
                 <div className="bt-pv-info">
                     <p className="bt-pv-meta">
